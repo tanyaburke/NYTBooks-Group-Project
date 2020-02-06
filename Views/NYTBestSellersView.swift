@@ -14,16 +14,16 @@ class NYTBestSellersView: UIView {
     public lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 250, height: 250)
+        layout.itemSize = CGSize(width: 200, height: 200)
         let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        cv.backgroundColor = .systemBackground
+        cv.backgroundColor = .systemYellow
         return cv
     }()
     
     public lazy var pickerView: UIPickerView = {
         let picker = UIPickerView()
         let pv = UIPickerView(frame: CGRect.zero)
-        pv.backgroundColor = .systemBackground
+        pv.backgroundColor = .systemBlue
         return pv
     }()
     
