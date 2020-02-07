@@ -30,6 +30,7 @@ class FavoritesViewController: UIViewController {
         favoriteViewInstance.favsCollectionView.dataSource = self
         
         // need to set the nib for the cell here.
+        favoriteViewInstance.favsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "favCell")
     }
     
 }
@@ -44,9 +45,9 @@ extension FavoritesViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favCell", for: indexPath)
-        let selectedFav = savedFavs[indexPath.row]
+       // let selectedFav = savedFavs[indexPath.row]
 
-        
+        cell.backgroundColor = .white
         return cell
     }
     
@@ -62,7 +63,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         
         let maxSize: CGSize = UIScreen.main.bounds.size
         
-        let itemWidth: CGFloat = maxSize.width
+        let itemWidth: CGFloat = maxSize.width * 0.5
         let itemheight: CGFloat = maxSize.height * 0.30
         
         return CGSize(width: itemWidth, height: itemheight)
