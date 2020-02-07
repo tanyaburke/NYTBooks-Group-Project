@@ -10,12 +10,104 @@ import UIKit
 
 class BookDetailView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+   //UIButton or Segmented control There should be 4 buttons or 4 segemented control that would take you to a safari view controller to present the book sellers webpage
+    //
+    //Safari ViewController It should show Amazon, apple books, Barnes & Nobles, Local Book Sellers based on one of the 4 buttons selected
+    //
+    //The Detail ViewController should show the Book's image (Large image), a TextView for the description and a label for the book title and a Favorite button.
+    //
+    //Favorites Button When a user favorites a book there should be a show alert or animation (It's up to you) anything that shows the user the book they favrited was added.
+   
+    
+    
+    
+    public lazy var imageView: UIImageView = {
+            let imageView = UIImageView()
+            imageView.backgroundColor = .orange
+            
+            return imageView
+        }()
+    
+    public lazy var textView: UITextView = {
+        let tv = UITextView()
+        tv.font = .italicSystemFont(ofSize: 20)
+        tv.text = "Sample text"
+        tv.isEditable = false
+        tv.backgroundColor = .systemGray
+        return tv
+    }()
+    
+    
+    public lazy var segmentedControl:UISegmentedControl  = {
+       let segments = UISegmentedControl()
+        segments.insertSegment(withTitle: "Amazon", at: 0, animated: true)
+        segments.insertSegment(withTitle: "Barnes&Noble", at: 1, animated: true)
+        segments.insertSegment(withTitle: "AppleBooks", at: 2, animated: true)
+        segments.insertSegment(withTitle: "LocalStore", at: 3, animated: true)
 
+         segments.layer.cornerRadius = 5.0
+         segments.backgroundColor = .red
+          segments.tintColor = .yellow
+         return segments
+     }()
+     
+     
+         override init(frame: CGRect) {
+             super.init(frame: UIScreen.main.bounds)
+             commonInit()
+         }
+         
+         required init?(coder: NSCoder) {
+             super.init(coder: coder)
+             commonInit()
+         }
+         
+         private func commonInit(){
+           
+           setupSegmentedControlConstraints()
+            setUpImageViewConstraints()
+            setupTextFeildConstraints()
+         }
+     
+   private  func setUpImageViewConstraints() {
+               
+                addSubview(imageView)
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+                    imageView.heightAnchor.constraint(equalToConstant: 220),
+                    imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+                    imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+                ])
+                
+            }
+     
+    
+     private func setupSegmentedControlConstraints(){
+         
+         addSubview(segmentedControl)
+         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                 segmentedControl.centerXAnchor.constraint(equalTo: centerXAnchor),
+                 segmentedControl.centerYAnchor.constraint(equalTo: centerYAnchor),
+                 segmentedControl.leadingAnchor.constraint(equalTo: leadingAnchor),
+                 segmentedControl.trailingAnchor.constraint(equalTo: trailingAnchor),
+//                 segmentedControl.bottomAnchor.constraint(equalTo: centerYAnchor)
+//        segments.center = UIScreen.main.bounds.anchorY
+     ])
+     }
+    
+    private func setupTextFeildConstraints(){
+        addSubview(textView)
+
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+        textView.centerXAnchor.constraint(equalTo: centerXAnchor),
+        textView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
+        textView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            textView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
 }
