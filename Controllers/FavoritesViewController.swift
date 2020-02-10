@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import DataPersistence
 
 class FavoritesViewController: UIViewController {
+    
+    private var favsDataPersistenceInstance = DataPersistence<ListItem>(filename: "favs.plist")
     
     // remember to push ONLY through terminal and also
     
