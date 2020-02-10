@@ -27,6 +27,9 @@
 		2EC31E0523EB5AF800D2A6A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC31E0423EB5AF800D2A6A1 /* SettingsViewController.swift */; };
 		2EC31E0823EB5B1800D2A6A1 /* NYTBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC31E0723EB5B1800D2A6A1 /* NYTBook.swift */; };
 		2EC31E0A23EB5B3100D2A6A1 /* NYAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC31E0923EB5B3100D2A6A1 /* NYAPIClient.swift */; };
+		C492BDFD23EE3B880059522C /* BookData.json in Resources */ = {isa = PBXBuildFile; fileRef = C492BDFC23EE3B880059522C /* BookData.json */; };
+		C492BDFF23EE3BAD0059522C /* CategoryData.json in Resources */ = {isa = PBXBuildFile; fileRef = C492BDFE23EE3BAD0059522C /* CategoryData.json */; };
+		C492BE0223EE3F9B0059522C /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = C492BE0123EE3F9B0059522C /* APIKeys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +66,9 @@
 		2EC31E0423EB5AF800D2A6A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		2EC31E0723EB5B1800D2A6A1 /* NYTBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYTBook.swift; sourceTree = "<group>"; };
 		2EC31E0923EB5B3100D2A6A1 /* NYAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYAPIClient.swift; sourceTree = "<group>"; };
+		C492BDFC23EE3B880059522C /* BookData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = BookData.json; sourceTree = "<group>"; };
+		C492BDFE23EE3BAD0059522C /* CategoryData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CategoryData.json; sourceTree = "<group>"; };
+		C492BE0123EE3F9B0059522C /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +93,9 @@
 		2EC31DBC23EB572800D2A6A1 = {
 			isa = PBXGroup;
 			children = (
+				C492BDFC23EE3B880059522C /* BookData.json */,
+				C492BDFE23EE3BAD0059522C /* CategoryData.json */,
+				C492BE0023EE3F880059522C /* Secrets */,
 				2EC31DC723EB572800D2A6A1 /* NYTBooks-Group-Project */,
 				2EC31E0B23EB5B3800D2A6A1 /* NetworkServices */,
 				2EC31E0623EB5AFE00D2A6A1 /* Models */,
@@ -177,6 +186,14 @@
 			path = NetworkServices;
 			sourceTree = "<group>";
 		};
+		C492BE0023EE3F880059522C /* Secrets */ = {
+			isa = PBXGroup;
+			children = (
+				C492BE0123EE3F9B0059522C /* APIKeys.swift */,
+			);
+			path = Secrets;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -265,7 +282,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2EC31DD523EB572D00D2A6A1 /* LaunchScreen.storyboard in Resources */,
+				C492BDFF23EE3BAD0059522C /* CategoryData.json in Resources */,
 				2EC31DD223EB572D00D2A6A1 /* Assets.xcassets in Resources */,
+				C492BDFD23EE3B880059522C /* BookData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,6 +309,7 @@
 				2EC31DEF23EB596200D2A6A1 /* FavoriteViewCell.swift in Sources */,
 				2EC31DFA23EB5A2800D2A6A1 /* SettingsView.swift in Sources */,
 				2EC31DCD23EB572800D2A6A1 /* ViewController.swift in Sources */,
+				C492BE0223EE3F9B0059522C /* APIKeys.swift in Sources */,
 				2EC31DF423EB59ED00D2A6A1 /* NYTBestSellersView.swift in Sources */,
 				2EC31DF623EB5A0000D2A6A1 /* FavoritesView.swift in Sources */,
 				2EC31E0523EB5AF800D2A6A1 /* SettingsViewController.swift in Sources */,

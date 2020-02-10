@@ -10,25 +10,48 @@ import XCTest
 @testable import NYTBooks_Group_Project
 
 class NYTBooks_Group_ProjectTests: XCTestCase {
-
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func testCategoryModel(){
+        // Arrange
+        var categories = [ListItem]()
+        let exp = expectation(description: "Receive 59 Categories")
+        let expectedNumberOfItems = 59
+        
+        // Act
+        NYTAPIClient.getCategories { result in
+            switch result{
+            case .failure(let appError):
+                XCTFail("Failed to retrieve categories: \(appError)")
+            case .success(let listItems):
+                exp.fulfill()
+                categories = listItems
+                // Assert
+                XCTAssertEqual(expectedNumberOfItems, listItems.count)
+            }
         }
+        wait(for: [exp], timeout: 3.0)
+    }
+    
+    func testBookDataModel(){
+        // Arrange
+        var bookList = [BookData]()
+        let exp = expectation(description: "Get back some book data")
+        let firstExpectedTitle = "AMERICAN DIRT"
+        
+        // Act
+        // This is a bit peculiar in that the category cannot contain a space.
+        NYTAPIClient.getBookData("hardcover-fiction") { result in
+            switch result{
+            case .failure(let appError):
+                XCTFail("Could not retrieve book data: \(appError)")
+            case .success(let books):
+                exp.fulfill()
+                bookList = books
+                // Assert
+                XCTAssertEqual(firstExpectedTitle, bookList.first!.title)
+            }
+        }
+        wait(for: [exp], timeout: 3.0)
     }
 
 }
