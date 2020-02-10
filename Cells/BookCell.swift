@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ImageKit
 
 class BookCell: UICollectionViewCell {
     
@@ -68,8 +69,16 @@ class BookCell: UICollectionViewCell {
         NSLayoutConstraint.activate([bookBlurbTextField.topAnchor.constraint(equalTo: numberOfWeeksBestSellerLabel.bottomAnchor, constant: 8), bookBlurbTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8), bookBlurbTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), bookBlurbTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)])
     }
     
-    public func configureBookCell(_ modelData: String){
-        // Some code to place data in the cell.
-        // Waiting on model data.
+    public func configureBookCell(_ modelData: BookData){
+        numberOfWeeksBestSellerLabel.text = "\(modelData.weeksOnList) weeks on the best sellers list."
+        bookBlurbTextField.text = modelData.description
+        bookCoverImageView.getImage(with: modelData.bookImage) { [weak self] result in
+            switch result{
+            case .failure(let appError):
+                print("Error loading image: \(appError)")
+            case .success(let image):
+                self?.bookCoverImageView.image = image
+            }
+        }
     }
 }
