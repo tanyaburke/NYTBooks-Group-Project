@@ -7,15 +7,67 @@
 //
 
 import UIKit
+import ImageKit
 
 class NYTBestSellersView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    public lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        // initially created cell size
+        let maxSize: CGSize = UIScreen.main.bounds.size
+        let itemHeight: CGFloat = maxSize.height * 0.4
+        let itemWidth: CGFloat = maxSize.height * 0.3
+        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        //layout.itemSize = CGSize(width: 200, height: 300)
+        let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        cv.backgroundColor = .systemYellow
+        return cv
+    }()
+    
+    public lazy var pickerView: UIPickerView = {
+        let picker = UIPickerView()
+        let pv = UIPickerView(frame: CGRect.zero)
+        pv.backgroundColor = .systemBlue
+        return pv
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: UIScreen.main.bounds)
+        commonInit()
     }
-    */
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+           setupCollectionViewConstraints()
+           setupPickerViewConstraints()
+       }
 
+    private func setupCollectionViewConstraints() {
+          addSubview(collectionView)
+          collectionView.translatesAutoresizingMaskIntoConstraints = false
+          NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+              collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+              collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+              collectionView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.5)
+          ])
+      }
+    
+    private func setupPickerViewConstraints() {
+        addSubview(pickerView)
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            pickerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 40),
+            pickerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            pickerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            pickerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 20)
+        ])
+    }
+    
+    
 }
