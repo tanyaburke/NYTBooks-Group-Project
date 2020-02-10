@@ -15,9 +15,21 @@ class FavoritesViewController: UIViewController {
     // instance of the controller
     private let favoriteViewInstance = FavoritesView()
     
+    //added the instance of the cell
+    private let favsCell = FavoriteViewCell()
     //making the instance of the empty array for the favs
     // need model inorder to add what is suppose to be in the array.
-    public var savedFavs = [String]()
+    public var savedFavs = [ListItem]() {
+        didSet{
+            favoriteViewInstance.favsCollectionView.reloadData() // reload the data inside of the collection view
+            
+            if savedFavs.isEmpty {
+                // need to make an extension for when the colletion view is empty
+               // favoriteViewInstance.favsCollectionView.backgroundView = EmptyCollection()
+                
+            }
+        }
+    }
     
     override func loadView() {
         view = favoriteViewInstance
@@ -30,9 +42,16 @@ class FavoritesViewController: UIViewController {
         favoriteViewInstance.favsCollectionView.dataSource = self
         
         // need to set the nib for the cell here.
-        favoriteViewInstance.favsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "favCell")
+        favoriteViewInstance.favsCollectionView.register(FavoriteViewCell.self, forCellWithReuseIdentifier: "favCell")
     }
     
+    private func fetchSavedBooks(){
+        do{
+            
+        }catch {
+            
+        }
+    }
 }
 
 extension FavoritesViewController: UICollectionViewDataSource {
