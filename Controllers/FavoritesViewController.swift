@@ -63,7 +63,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         
         let maxSize: CGSize = UIScreen.main.bounds.size
         
-        let itemWidth: CGFloat = maxSize.width * 0.5
+        let itemWidth: CGFloat = maxSize.width 
         let itemheight: CGFloat = maxSize.height * 0.30
         
         return CGSize(width: itemWidth, height: itemheight)
