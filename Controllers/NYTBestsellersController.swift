@@ -19,6 +19,7 @@ class NYTBestsellersController: UIViewController {
     }
 
     override func viewDidLoad() {
+
         super.viewDidLoad()
         view.backgroundColor = .systemOrange
         navigationItem.title = "NYT Bestsellers"
