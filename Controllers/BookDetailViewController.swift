@@ -6,13 +6,15 @@
 //  Copyright © 2020 Tanya Burke. All rights reserved.
 //
 
+
 import UIKit
 
 class BookDetailViewController: UIViewController {
     
     let detailView = BookDetailView()
     var chosenBook: BookData?
-  //  public var dataPersistence: DataPersistence<Article>!
+   
+//    public var dataPersistence: DataPersistence<Article>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,13 +23,15 @@ class BookDetailViewController: UIViewController {
         navigationItem.title = chosenBook?.title
         updateUI()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favButtonPressed(_:)))
+     navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favButtonPressed(_:)))
+      
         
         detailView.segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
     }
     
     override func viewWillLayoutSubviews() {
         detailView.textView.layer.cornerRadius = 10
+        detailView.imageView.layer.cornerRadius = 10
     }
     override func loadView() {
         view = detailView
@@ -56,6 +60,7 @@ class BookDetailViewController: UIViewController {
             case .success(let image):
                 DispatchQueue.main.async {
                     self?.detailView.imageView.image = image
+                    
                 }
             }
         }
@@ -64,7 +69,7 @@ class BookDetailViewController: UIViewController {
     }
     
     @objc func segmentChanged(_ sender: UISegmentedControl){
-//        guard let book = chosenBook else{return}
+
         guard let bookLink = chosenBook?.buyLinks else{ return}
         
             switch sender.selectedSegmentIndex{
@@ -93,5 +98,6 @@ class BookDetailViewController: UIViewController {
                 }
         }
     
+   
     
 }
