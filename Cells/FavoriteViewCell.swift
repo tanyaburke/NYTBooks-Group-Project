@@ -10,12 +10,15 @@ import UIKit
 import ImageKit
 
 protocol FavouriteViewCellDelegate: AnyObject{
-    func moreOptionsButtonPressed(_ favouriteViewCell: FavoriteViewCell)
+    
+func moreOptionsButtonPressed(_ favouriteViewCell: FavoriteViewCell, book: BookData)
 }
 
 class FavoriteViewCell: UICollectionViewCell {
     
     weak var delegate: FavouriteViewCellDelegate?
+    
+    private var modelData: BookData?
     
     lazy var bookCoverImageView: UIImageView = {
       let imageView = UIImageView()
@@ -105,7 +108,7 @@ class FavoriteViewCell: UICollectionViewCell {
     }
     
     @IBAction func moreOptionsButtonPressed(_ sender: UIButton){
-        delegate?.moreOptionsButtonPressed(self)
+        delegate?.moreOptionsButtonPressed(self, book: modelData!)
     }
     
 

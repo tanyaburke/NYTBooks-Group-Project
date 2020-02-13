@@ -21,10 +21,11 @@ class FavoritesViewController: UIViewController {
     //added the instance of the cell
     private let favsCell = FavoriteViewCell()
     
-    
+    public var selectedfav: BookData?
     //making the instance of the empty array for the favs
     // need model inorder to add what is suppose to be in the array.
-    public var savedFavs = [BookData]() {
+    public var savedFavs = [BookData]()
+    {
         didSet{
             favoriteViewInstance.favsCollectionView.reloadData() // reload the data inside of the collection view
             
@@ -35,6 +36,7 @@ class FavoritesViewController: UIViewController {
             }
         }
     }
+    
     
     override func loadView() {
         view = favoriteViewInstance
@@ -78,7 +80,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
         cell.configureFavouriteViewCell(selectedFav)
         
-        cell.delegate = self // why do we need th
+        cell.delegate = self
         cell.backgroundColor = .white
         return cell
     }
@@ -101,6 +103,16 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: itemWidth, height: itemheight)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedrFav = savedFavs[indexPath.row]
+        
+        let instanceOfDetailController = BookDetailViewController()
+        
+      // instanceOfDetailController.chosenBook = selectedFav
+        
+        navigationController?.pushViewController(instanceOfDetailController, animated: true)
+    }
+    
     
 }
 
@@ -116,6 +128,7 @@ extension FavoritesViewController: DataPersistenceDelegate {
 
 extension FavoritesViewController: FavouriteViewCellDelegate {
     
+
     // need to implement the button...
     func moreOptionsButtonPressed(_ favouriteViewCell: FavoriteViewCell, book: BookData) {
         
