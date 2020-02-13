@@ -7,17 +7,34 @@
 //
 
 import UIKit
+import DataPersistence
 
 class FavoritesViewController: UIViewController {
-    
+
     // remember to push ONLY through terminal and also
     
     // instance of the controller
     private let favoriteViewInstance = FavoritesView()
     
+    public var favsDataPersistenceInstance: DataPersistence<BookData>!
+
+    //added the instance of the cell
+    private let favsCell = FavoriteViewCell()
+    
+    
     //making the instance of the empty array for the favs
     // need model inorder to add what is suppose to be in the array.
-    public var savedFavs = [String]()
+    public var savedFavs = [BookData]() {
+        didSet{
+            favoriteViewInstance.favsCollectionView.reloadData() // reload the data inside of the collection view
+            
+            if savedFavs.isEmpty {
+                // need to make an extension for when the colletion view is empty
+               // favoriteViewInstance.favsCollectionView.backgroundView = EmptyCollection()
+                
+            }
+        }
+    }
     
     override func loadView() {
         view = favoriteViewInstance
@@ -31,9 +48,18 @@ class FavoritesViewController: UIViewController {
         favoriteViewInstance.favsCollectionView.dataSource = self
         
         // need to set the nib for the cell here.
-        favoriteViewInstance.favsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "favCell")
+        favoriteViewInstance.favsCollectionView.register(FavoriteViewCell.self, forCellWithReuseIdentifier: "favCell")
+        fetchSavedBooks()
+        
     }
     
+    private func fetchSavedBooks(){
+        do{
+            savedFavs = try favsDataPersistenceInstance.loadItems()
+        }catch {
+            print("the error is because \(error)")
+        }
+    }
 }
 
 extension FavoritesViewController: UICollectionViewDataSource {
@@ -41,13 +67,18 @@ extension FavoritesViewController: UICollectionViewDataSource {
     // what is the item
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // savedFavs.count
-        return 20
+        return savedFavs.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favCell", for: indexPath)
-       // let selectedFav = savedFavs[indexPath.row]
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favCell", for: indexPath) as? FavoriteViewCell else{
+            fatalError(" couldnt dequeue.")
+        }
+        let selectedFav = savedFavs[indexPath.row]
 
+        cell.configureFavouriteViewCell(selectedFav)
+        
+        cell.delegate = self // why do we need th
         cell.backgroundColor = .white
         return cell
     }
@@ -68,6 +99,54 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         let itemheight: CGFloat = maxSize.height * 0.30
         
         return CGSize(width: itemWidth, height: itemheight)
+    }
+    
+    
+}
+
+extension FavoritesViewController: DataPersistenceDelegate {
+    func didSaveItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
+        
+    }
+    
+    func didDeleteItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
+    
+    }
+}
+
+extension FavoritesViewController: FavouriteViewCellDelegate {
+    
+    // need to implement the button...
+    func moreOptionsButtonPressed(_ favouriteViewCell: FavoriteViewCell, book: BookData) {
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet )
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) {
+            alertAction in
+            self.deleteSomething(book)
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        
+        present(alertController, animated: true)
+    }
+    
+    
+    private func deleteSomething(_ book: BookData){
+        
+        guard let index = savedFavs.firstIndex(of: book) else {
+            return
+        }
+        
+        do{
+            try favsDataPersistenceInstance.deleteItem(at: index)
+        } catch {
+            print("whatever is the error is it is: \(error)")
+        }
+        
     }
     
     
