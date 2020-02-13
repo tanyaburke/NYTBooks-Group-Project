@@ -31,9 +31,10 @@ class BookDetailView: UIView {
     public lazy var textView: UITextView = {
         let tv = UITextView()
         tv.font = .italicSystemFont(ofSize: 20)
+        tv.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         tv.text = "Sample text"
         tv.isEditable = false
-        tv.backgroundColor = .systemGray
+        tv.backgroundColor = .systemBackground
 
         return tv
     }()
@@ -77,9 +78,9 @@ class BookDetailView: UIView {
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40),
-                    imageView.heightAnchor.constraint(equalToConstant: 240),
-                    imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-                    imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+                    imageView.heightAnchor.constraint(equalToConstant: 300),
+                    imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
+                    imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40)
                 ])
                 
             }
@@ -92,8 +93,8 @@ class BookDetailView: UIView {
                 NSLayoutConstraint.activate([
                  segmentedControl.centerXAnchor.constraint(equalTo: centerXAnchor),
                  segmentedControl.centerYAnchor.constraint(equalTo: centerYAnchor),
-                 segmentedControl.leadingAnchor.constraint(equalTo: leadingAnchor),
-                 segmentedControl.trailingAnchor.constraint(equalTo: trailingAnchor),
+                 segmentedControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+                 segmentedControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 //                 segmentedControl.bottomAnchor.constraint(equalTo: centerYAnchor)
 //        segments.center = UIScreen.main.bounds.anchorY
      ])
