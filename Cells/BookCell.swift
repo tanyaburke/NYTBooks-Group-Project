@@ -25,10 +25,11 @@ class BookCell: UICollectionViewCell {
         return label
     }()
     
-    lazy var bookBlurbTextField: UITextField = {
-       let textField = UITextField()
+    lazy var bookBlurbTextField: UITextView = {
+       let textField = UITextView()
         textField.text = "A description about the book shown above"
         textField.backgroundColor = .systemGray4
+        textField.isEditable = false
         return textField
     }()
     
@@ -70,14 +71,16 @@ class BookCell: UICollectionViewCell {
     }
     
     public func configureBookCell(_ modelData: BookData){
-        numberOfWeeksBestSellerLabel.text = "\(modelData.weeksOnList) weeks on the best sellers list."
+        numberOfWeeksBestSellerLabel.text = "\(modelData.weeksOnList) week(s) on the best sellers list"
         bookBlurbTextField.text = modelData.description
         bookCoverImageView.getImage(with: modelData.bookImage) { [weak self] result in
             switch result{
             case .failure(let appError):
                 print("Error loading image: \(appError)")
             case .success(let image):
-                self?.bookCoverImageView.image = image
+                DispatchQueue.main.async{
+                    self?.bookCoverImageView.image = image
+                }
             }
         }
     }
