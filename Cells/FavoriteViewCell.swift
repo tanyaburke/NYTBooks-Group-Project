@@ -100,7 +100,9 @@ class FavoriteViewCell: UICollectionViewCell {
             case .failure(let appError):
                 print("Error loading image: \(appError)")
             case .success(let image):
-                self?.bookCoverImageView.image = image
+                DispatchQueue.main.async{
+                    self?.bookCoverImageView.image = image
+                }
             }
         }
     }
