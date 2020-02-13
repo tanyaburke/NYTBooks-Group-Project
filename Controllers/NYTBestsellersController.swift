@@ -12,12 +12,25 @@ class NYTBestsellersController: UIViewController {
     
     private let nytBestSellerView = NYTBestSellersView()
     
-    private let categories = ["Business", "Technology", "Travel", "Authobiography", "Novels"]
+    private var categories: [ListItem] = []{
+        didSet{
+            DispatchQueue.main.async{
+                self.nytBestSellerView.pickerView.reloadComponent(0)
+            }
+        }
+    }
+    
+    private var bestSellers: [BookData] = [] {
+        didSet{
+            DispatchQueue.main.async{
+                self.nytBestSellerView.collectionView.reloadData()
+            }
+        }
+    }
     
     override func loadView() {
         view = nytBestSellerView
     }
-
     override func viewDidLoad() {
 
         super.viewDidLoad()
@@ -31,12 +44,33 @@ class NYTBestsellersController: UIViewController {
         nytBestSellerView.pickerView.delegate = self
         
         //FIXME: when I will have cell name
-//        nytBestSellerView.collectionView.register(UINib(nibName: "BookCell", bundle: nil),  forCellWithReuseIdentifier: "bookCell")
+        nytBestSellerView.collectionView.register(BookCell.self, forCellWithReuseIdentifier: "bookCell")
         
         // register a collectionView cell
         //         we use generic cell
-    nytBestSellerView.collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "bookCell")
+//    nytBestSellerView.collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "bookCell")
+        setUp()
+    }
     
+    private func setUp(){
+        NYTAPIClient.getBookData("Manga") { [weak self] result in
+            switch result{
+            case .failure(let appError):
+                print("Error getting bookData: \(appError)")
+            case .success(let data):
+                self?.bestSellers = data
+            }
+        }
+        
+        NYTAPIClient.getCategories { [weak self] result in
+            switch result{
+            case .failure(let appError):
+                print("Error loading category data: \(appError)")
+            case .success(let listItems):
+                self?.categories = listItems
+            }
+        }
+        
     }
 
 }
@@ -44,15 +78,17 @@ class NYTBestsellersController: UIViewController {
 extension NYTBestsellersController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //FIXME: I should change it with books.count
-        return 10
+        return bestSellers.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bookCell", for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bookCell", for: indexPath) as? BookCell else {
+            fatalError("Could not dequeue reusable cell as a BookCell.")
+        }
+        cell.configureBookCell(bestSellers[indexPath.row])
         cell.backgroundColor = .white
         return cell
     }
 }
-
 extension NYTBestsellersController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let maxSize: CGSize = UIScreen.main.bounds.size
@@ -84,11 +120,9 @@ extension NYTBestsellersController: UICollectionViewDelegateFlowLayout {
 extension NYTBestsellersController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         // FIXME:
-        return categories[row]
+        return categories[row].displayName
     }
 //    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 //       // _ = categories[row]
 //    }
 }
-
-
