@@ -23,8 +23,8 @@ class BookDetailView: UIView {
     
     public lazy var imageView: UIImageView = {
             let imageView = UIImageView()
-            imageView.backgroundColor = .orange
-            
+            imageView.backgroundColor = .systemBackground
+        imageView.contentMode = .scaleAspectFit
             return imageView
         }()
     
@@ -34,6 +34,7 @@ class BookDetailView: UIView {
         tv.text = "Sample text"
         tv.isEditable = false
         tv.backgroundColor = .systemGray
+
         return tv
     }()
     
@@ -46,8 +47,9 @@ class BookDetailView: UIView {
         segments.insertSegment(withTitle: "LocalStore", at: 3, animated: true)
 
          segments.layer.cornerRadius = 5.0
-         segments.backgroundColor = .red
+         segments.backgroundColor = .systemBackground
           segments.tintColor = .yellow
+        
          return segments
      }()
      
@@ -74,8 +76,8 @@ class BookDetailView: UIView {
                 addSubview(imageView)
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
-                    imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-                    imageView.heightAnchor.constraint(equalToConstant: 220),
+                    imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40),
+                    imageView.heightAnchor.constraint(equalToConstant: 240),
                     imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
                     imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
                 ])
@@ -104,9 +106,9 @@ class BookDetailView: UIView {
         NSLayoutConstraint.activate([
         textView.centerXAnchor.constraint(equalTo: centerXAnchor),
         textView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
-        textView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            textView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            textView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        textView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+        textView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            textView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
     }
     

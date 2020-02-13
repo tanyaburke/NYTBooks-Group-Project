@@ -9,26 +9,89 @@
 import UIKit
 
 class BookDetailViewController: UIViewController {
-
+    
     let detailView = BookDetailView()
+    var chosenBook: BookData?
+  //  public var dataPersistence: DataPersistence<Article>!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemTeal
+        view.backgroundColor = .systemPink
         // Do any additional setup after loading the view.
-        navigationItem.title =  "Book Title"
+        navigationItem.title = chosenBook?.title
+        updateUI()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favButtonPressed(_:)))
+        
+        detailView.segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
     }
     
+    override func viewWillLayoutSubviews() {
+        detailView.textView.layer.cornerRadius = 10
+    }
     override func loadView() {
         view = detailView
     }
     
-
-    //UIButton or Segmented control There should be 4 buttons or 4 segemented control that would take you to a safari view controller to present the book sellers webpage
-    //
-    //Safari ViewController It should show Amazon, apple books, Barnes & Nobles, Local Book Sellers based on one of the 4 buttons selected
-    //
-    //The Detail ViewController should show the Book's image (Large image), a TextView for the description and a label for the book title and a Favorite button.
-    //
-    //Favorites Button When a user favorites a book there should be a show alert or animation (It's up to you) anything that shows the user the book they favrited was added.
-
+    @objc func favButtonPressed(_ sender: UIBarButtonItem){
+//        guard let book = chosenBook else { return }
+//        let favVC = FavoritesViewController()
+//            do {
+//
+////                try dataPersistence.createItem(book)
+//
+//            } catch {
+//                print("error saving article: \(book)")
+//            }
+    }
+    
+    
+    func updateUI() {
+        detailView.imageView.getImage(with: chosenBook?.bookImage ?? "") { [weak self] (result) in
+            switch result {
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.detailView.imageView.image = UIImage(named: "exclamation.mark.triangle")
+                }
+            case .success(let image):
+                DispatchQueue.main.async {
+                    self?.detailView.imageView.image = image
+                }
+            }
+        }
+        
+        detailView.textView.text = chosenBook?.description
+    }
+    
+    @objc func segmentChanged(_ sender: UISegmentedControl){
+//        guard let book = chosenBook else{return}
+        guard let bookLink = chosenBook?.buyLinks else{ return}
+        
+            switch sender.selectedSegmentIndex{
+            case 0:
+                print("selected\(sender.tag)")
+                if let url = URL(string: bookLink[0].url) {
+                        UIApplication.shared.open(url)
+                    }
+                case 1:
+                    print("selected\(sender.tag)")
+                    if let url = URL(string: bookLink[1].url) {
+                        UIApplication.shared.open(url)
+                    }
+                case 2:
+                    print("selected\(sender.tag)")
+                if let url = URL(string: bookLink[2].url) {
+                    UIApplication.shared.open(url)
+                }
+                case 3:
+                    print("selected\(sender.tag)")
+                if let url = URL(string: bookLink[3].url) {
+                    UIApplication.shared.open(url)
+                }
+                default:
+                    break
+                }
+        }
+    
+    
 }
