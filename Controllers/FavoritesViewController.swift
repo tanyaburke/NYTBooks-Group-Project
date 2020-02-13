@@ -21,6 +21,7 @@ class FavoritesViewController: UIViewController {
     //added the instance of the cell
     private let favsCell = FavoriteViewCell()
     
+    public var selectedfav: BookData?
     
     //making the instance of the empty array for the favs
     // need model inorder to add what is suppose to be in the array.
@@ -101,6 +102,17 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: itemWidth, height: itemheight)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+             let selectedrFav = savedFavs[indexPath.row]
+            
+            let instanceOfDetailController = BookDetailViewController()
+            
+          // instanceOfDetailController.chosenBook = selectedFav
+            
+            navigationController?.pushViewController(instanceOfDetailController, animated: true)
+        
+    }
+    
     
 }
 
@@ -148,6 +160,4 @@ extension FavoritesViewController: FavouriteViewCellDelegate {
         }
         
     }
-    
-    
 }
