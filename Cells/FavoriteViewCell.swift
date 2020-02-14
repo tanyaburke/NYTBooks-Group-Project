@@ -19,9 +19,12 @@ class FavoriteViewCell: UICollectionViewCell {
 
     private var modelData: BookData?
     
+    private var pictureIsShowing = true
+    
     lazy var bookCoverImageView: UIImageView = {
       let imageView = UIImageView()
         imageView.image = UIImage(systemName: "book")
+        imageView.alpha = 1.0
         return imageView
     }()
     
@@ -30,15 +33,17 @@ class FavoriteViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.text = "Some filler text"
         label.backgroundColor = .systemRed
+        label.alpha = 1.0
         return label
     }()
     
-    lazy var bookBlurbTextField: UITextView = {
-       let textField = UITextView()
-        textField.text = "A description about the book shown above"
-        textField.backgroundColor = .systemGray4
-        textField.isEditable = false
-        return textField
+    lazy var bookBlurbTextView: UITextView = {
+       let textView = UITextView()
+        textView.text = "A description about the book shown above"
+        textView.backgroundColor = .systemGray4
+        textView.isEditable = false
+        textView.alpha = 0.0
+        return textView
     }()
     
     lazy var moreOptionsButton: UIButton = {
@@ -46,7 +51,14 @@ class FavoriteViewCell: UICollectionViewCell {
         button.setTitle("", for: .normal)
         button.setBackgroundImage(UIImage(systemName: "ellipsis"), for: .normal)
         button.addTarget(self, action: #selector(moreOptionsButtonPressed), for: .touchUpInside)
+        button.alpha = 1.0
         return button
+    }()
+    
+    lazy var longPress: UILongPressGestureRecognizer = {
+        let lp = UILongPressGestureRecognizer()
+        lp.addTarget(self, action: #selector(cellLongPressed(_:)))
+        return lp
     }()
     
     override init(frame: CGRect) {
@@ -63,8 +75,10 @@ class FavoriteViewCell: UICollectionViewCell {
         setUpBookCoverImageViewConstraints()
         setUpMoreOptionsButtonConstraints()
         setUpNumberOfWeeksBestSellerLabelConstraints()
-        setUpBookBlurbTextFieldConstraints()
-        
+        setUpBookBlurbTextViewConstraints()
+        addGestureRecognizer(longPress)
+        bookBlurbTextView.isUserInteractionEnabled = false
+        bookBlurbTextView.isEditable = false
     }
     
     private func setUpBookCoverImageViewConstraints(){
@@ -72,31 +86,57 @@ class FavoriteViewCell: UICollectionViewCell {
     
         bookCoverImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([bookCoverImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), bookCoverImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor), bookCoverImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5), bookCoverImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5)])
+        NSLayoutConstraint.activate([bookCoverImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), bookCoverImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor), bookCoverImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9), bookCoverImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5)])
     }
     
     private func setUpMoreOptionsButtonConstraints() {
         addSubview(moreOptionsButton)
         moreOptionsButton.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([moreOptionsButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), moreOptionsButton.leadingAnchor.constraint(equalTo: bookCoverImageView.trailingAnchor, constant: 8), moreOptionsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), moreOptionsButton.heightAnchor.constraint(equalToConstant: 50)])
+        NSLayoutConstraint.activate([moreOptionsButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), moreOptionsButton.widthAnchor.constraint(equalToConstant: 50), moreOptionsButton.heightAnchor.constraint(equalToConstant: 50)])
     }
     
     private func setUpNumberOfWeeksBestSellerLabelConstraints() {
         addSubview(numberOfWeeksBestSellerLabel)
         numberOfWeeksBestSellerLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([numberOfWeeksBestSellerLabel.topAnchor.constraint(equalTo: bookCoverImageView.bottomAnchor, constant: 8), numberOfWeeksBestSellerLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8), numberOfWeeksBestSellerLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), numberOfWeeksBestSellerLabel.heightAnchor.constraint(equalToConstant: 40)])
+        NSLayoutConstraint.activate([numberOfWeeksBestSellerLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 58), numberOfWeeksBestSellerLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8), numberOfWeeksBestSellerLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), numberOfWeeksBestSellerLabel.heightAnchor.constraint(equalToConstant: 40)])
     }
     
-    private func setUpBookBlurbTextFieldConstraints(){
-        addSubview(bookBlurbTextField)
-        bookBlurbTextField.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([bookBlurbTextField.topAnchor.constraint(equalTo: numberOfWeeksBestSellerLabel.bottomAnchor, constant: 8), bookBlurbTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8), bookBlurbTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), bookBlurbTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)])
+    private func setUpBookBlurbTextViewConstraints(){
+        addSubview(bookBlurbTextView)
+        bookBlurbTextView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([bookBlurbTextView.topAnchor.constraint(equalTo: numberOfWeeksBestSellerLabel.bottomAnchor, constant: 8), bookBlurbTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8), bookBlurbTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), bookBlurbTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)])
+    }
+    
+    @objc
+    public func cellLongPressed(_ gesture: UILongPressGestureRecognizer){
+        if gesture.state == .began || gesture.state == .changed{
+            return
+        }
+        flipItOver()
+    }
+    
+    private func flipItOver(){
+        if pictureIsShowing{
+            UIView.transition(with: self, duration: 1.0, options: [.transitionFlipFromBottom], animations: {
+                self.bookCoverImageView.alpha = 0.0
+                self.numberOfWeeksBestSellerLabel.alpha = 1.0
+                self.bookBlurbTextView.alpha = 1.0
+            }, completion: nil)
+        } else {
+            UIView.transition(with: self, duration: 1.0, options: [.transitionFlipFromTop], animations: {
+                self.bookCoverImageView.alpha = 1.0
+                self.numberOfWeeksBestSellerLabel.alpha = 0.0
+                self.bookBlurbTextView.alpha = 0.0
+            }, completion: nil)
+        }
+        pictureIsShowing.toggle()
     }
     
     public func configureFavouriteViewCell(_ modelData: BookData){
+        self.modelData = modelData
         numberOfWeeksBestSellerLabel.text = "\(modelData.weeksOnList) week(s) on the best sellers list"
-        bookBlurbTextField.text = modelData.description
+        bookBlurbTextView.text = modelData.description
         bookCoverImageView.getImage(with: modelData.bookImage) { [weak self] result in
             switch result{
             case .failure(let appError):
@@ -110,7 +150,10 @@ class FavoriteViewCell: UICollectionViewCell {
     }
     
     @IBAction func moreOptionsButtonPressed(_ sender: UIButton){
-        delegate?.moreOptionsButtonPressed(self, book: modelData!)
+        guard let sampleData = modelData else {
+            fatalError("The data is not being passed.")
+        }
+        delegate?.moreOptionsButtonPressed(self, book: sampleData)
     }
     
 
