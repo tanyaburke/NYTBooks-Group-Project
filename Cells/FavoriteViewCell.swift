@@ -134,6 +134,7 @@ class FavoriteViewCell: UICollectionViewCell {
     }
     
     public func configureFavouriteViewCell(_ modelData: BookData){
+        self.modelData = modelData
         numberOfWeeksBestSellerLabel.text = "\(modelData.weeksOnList) week(s) on the best sellers list"
         bookBlurbTextView.text = modelData.description
         bookCoverImageView.getImage(with: modelData.bookImage) { [weak self] result in
@@ -149,7 +150,10 @@ class FavoriteViewCell: UICollectionViewCell {
     }
     
     @IBAction func moreOptionsButtonPressed(_ sender: UIButton){
-        delegate?.moreOptionsButtonPressed(self, book: modelData!)
+        guard let sampleData = modelData else {
+            fatalError("The data is not being passed.")
+        }
+        delegate?.moreOptionsButtonPressed(self, book: sampleData)
     }
     
 
