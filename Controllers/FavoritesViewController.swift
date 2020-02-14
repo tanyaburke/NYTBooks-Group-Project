@@ -16,12 +16,26 @@ class FavoritesViewController: UIViewController {
     // instance of the controller
     private let favoriteViewInstance = FavoritesView()
     
-    public var favsDataPersistenceInstance: DataPersistence<BookData>!
+    var chosenBook: BookData?
+    
+    private var favsDataPersistenceInstance: DataPersistence<BookData>
+    
+    init(dataPersistence: DataPersistence<BookData> ){
+        favsDataPersistenceInstance = dataPersistence
+        super.init(nibName: nil, bundle: nil)
+        // this will load first so it should be here. 
+        favsDataPersistenceInstance.delegate = self
 
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //added the instance of the cell
     private let favsCell = FavoriteViewCell()
     
-    public var selectedfav: BookData?
+    //public var selectedfav: BookData?
     
     //making the instance of the empty array for the favs
     // need model inorder to add what is suppose to be in the array.
@@ -92,22 +106,25 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     // when I do something then someone else will listen...
     // delegates listen for what we want ...
     
+  
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let maxSize: CGSize = UIScreen.main.bounds.size
         
         let itemWidth: CGFloat = maxSize.width 
-        let itemheight: CGFloat = maxSize.height * 0.30
+        let itemheight: CGFloat = maxSize.height * 0.5
         
         return CGSize(width: itemWidth, height: itemheight)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-             let selectedrFav = savedFavs[indexPath.row]
+             let selectedFav = savedFavs[indexPath.row]
             
-            let instanceOfDetailController = BookDetailViewController()
+        let instanceOfDetailController = BookDetailViewController(dataPersistence: favsDataPersistenceInstance, book: selectedFav)
+       
             
-          // instanceOfDetailController.chosenBook = selectedFav
+           instanceOfDetailController.chosenBook = selectedFav
             
             navigationController?.pushViewController(instanceOfDetailController, animated: true)
         
@@ -118,11 +135,11 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 extension FavoritesViewController: DataPersistenceDelegate {
     func didSaveItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
-        
+        fetchSavedBooks()
     }
     
     func didDeleteItem<T>(_ persistenceHelper: DataPersistence<T>, item: T) where T : Decodable, T : Encodable, T : Equatable {
-    
+    fetchSavedBooks()
     }
 }
 
