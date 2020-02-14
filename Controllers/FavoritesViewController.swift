@@ -16,7 +16,6 @@ class FavoritesViewController: UIViewController {
     // instance of the controller
     private let favoriteViewInstance = FavoritesView()
     
-    var chosenBook: BookData?
     
     private var favsDataPersistenceInstance: DataPersistence<BookData>
     
