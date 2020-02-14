@@ -8,19 +8,20 @@
 
 
 import UIKit
+import DataPersistence
 
 class BookDetailViewController: UIViewController {
     
     let detailView = BookDetailView()
-    var chosenBook: BookData?
+    var chosenBook: BookData
    
-//    public var dataPersistence: DataPersistence<Article>!
+    private var dataPersistence: DataPersistence<BookData>
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemPink
+        view.backgroundColor = .purple
         // Do any additional setup after loading the view.
-        navigationItem.title = chosenBook?.title
+        navigationItem.title = chosenBook.title
         updateUI()
         
      navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(favButtonPressed(_:)))
@@ -28,6 +29,19 @@ class BookDetailViewController: UIViewController {
         
         detailView.segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
     }
+    
+    
+    init(_ dataPersistence: DataPersistence<BookData>, book:BookData){
+           self.dataPersistence = dataPersistence
+           self.chosenBook = book
+           super.init(nibName: nil, bundle: nil)
+       }
+       
+       required init?(coder: NSCoder) {
+           fatalError("init(coder:) has not been implemented")
+       }
+    
+    
     
     override func viewWillLayoutSubviews() {
         detailView.textView.layer.cornerRadius = 10
@@ -38,20 +52,22 @@ class BookDetailViewController: UIViewController {
     }
     
     @objc func favButtonPressed(_ sender: UIBarButtonItem){
-//        guard let book = chosenBook else { return }
-//        let favVC = FavoritesViewController()
-//            do {
-//
-////                try dataPersistence.createItem(book)
-//
-//            } catch {
-//                print("error saving article: \(book)")
-//            }
+
+            do {
+
+                try dataPersistence.createItem(chosenBook)
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Saved", message: "Book has been added to favorites")
+                }
+
+            } catch {
+                print("error saving article: \(chosenBook)")
+            }
     }
     
     
     func updateUI() {
-        detailView.imageView.getImage(with: chosenBook?.bookImage ?? "") { [weak self] (result) in
+        detailView.imageView.getImage(with: chosenBook.bookImage ) { [weak self] (result) in
             switch result {
             case .failure:
                 DispatchQueue.main.async {
@@ -65,12 +81,12 @@ class BookDetailViewController: UIViewController {
             }
         }
         
-        detailView.textView.text = chosenBook?.description
+        detailView.textView.text = chosenBook.description
     }
     
     @objc func segmentChanged(_ sender: UISegmentedControl){
 
-        guard let bookLink = chosenBook?.buyLinks else{ return}
+        let bookLink = chosenBook.buyLinks 
         
             switch sender.selectedSegmentIndex{
             case 0:
