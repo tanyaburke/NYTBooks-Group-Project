@@ -11,9 +11,12 @@ import ImageKit
 
 class BookCell: UICollectionViewCell {
     
+    private var pictureIsShowing = true
+    
     lazy var bookCoverImageView: UIImageView = {
       let imageView = UIImageView()
         imageView.image = UIImage(systemName: "book")
+        imageView.alpha = 1.0
         return imageView
     }()
     
@@ -22,15 +25,23 @@ class BookCell: UICollectionViewCell {
         label.textAlignment = .left
         label.text = "Some filler text"
         label.backgroundColor = .systemRed
+        label.alpha = 0.0
         return label
     }()
     
-    lazy var bookBlurbTextField: UITextView = {
-       let textField = UITextView()
-        textField.text = "A description about the book shown above"
-        textField.backgroundColor = .systemGray4
-        textField.isEditable = false
-        return textField
+    lazy var bookBlurbTextView: UITextView = {
+       let textView = UITextView()
+        textView.text = "A description about the book shown above"
+        textView.backgroundColor = .systemGray4
+        textView.isEditable = false
+        textView.alpha = 0.0
+        return textView
+    }()
+    
+    lazy var longPress: UILongPressGestureRecognizer = {
+       let lp = UILongPressGestureRecognizer()
+        lp.addTarget(self, action: #selector(longPressHappened))
+        return lp
     }()
     
     override init(frame: CGRect) {
@@ -47,7 +58,9 @@ class BookCell: UICollectionViewCell {
         setUpBookCoverImageViewConstraints()
         setUpNumberOfWeeksBestSellerLabelConstraints()
         setUpBookBlurbTextFieldConstraints()
-        
+        addGestureRecognizer(longPress)
+        bookBlurbTextView.isUserInteractionEnabled = false
+        bookBlurbTextView.isEditable = false
     }
     
     private func setUpBookCoverImageViewConstraints(){
@@ -55,24 +68,49 @@ class BookCell: UICollectionViewCell {
     
         bookCoverImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([bookCoverImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), bookCoverImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor), bookCoverImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5), bookCoverImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5)])
+        NSLayoutConstraint.activate([bookCoverImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), bookCoverImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor), bookCoverImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9), bookCoverImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5)])
     }
     
     private func setUpNumberOfWeeksBestSellerLabelConstraints() {
         addSubview(numberOfWeeksBestSellerLabel)
         numberOfWeeksBestSellerLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([numberOfWeeksBestSellerLabel.topAnchor.constraint(equalTo: bookCoverImageView.bottomAnchor, constant: 8), numberOfWeeksBestSellerLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8), numberOfWeeksBestSellerLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), numberOfWeeksBestSellerLabel.heightAnchor.constraint(equalToConstant: 40)])
+        NSLayoutConstraint.activate([numberOfWeeksBestSellerLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), numberOfWeeksBestSellerLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8), numberOfWeeksBestSellerLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), numberOfWeeksBestSellerLabel.heightAnchor.constraint(equalToConstant: 40)])
     }
     
     private func setUpBookBlurbTextFieldConstraints(){
-        addSubview(bookBlurbTextField)
-        bookBlurbTextField.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([bookBlurbTextField.topAnchor.constraint(equalTo: numberOfWeeksBestSellerLabel.bottomAnchor, constant: 8), bookBlurbTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8), bookBlurbTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), bookBlurbTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)])
+        addSubview(bookBlurbTextView)
+        bookBlurbTextView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([bookBlurbTextView.topAnchor.constraint(equalTo: numberOfWeeksBestSellerLabel.bottomAnchor, constant: 8), bookBlurbTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8), bookBlurbTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8), bookBlurbTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)])
+    }
+    
+    @objc
+    public func longPressHappened(_ gesture: UILongPressGestureRecognizer){
+        if gesture.state == .began || gesture.state == .changed {
+            return
+        }
+        flipItOver()
+    }
+    
+    public func flipItOver(){
+        if pictureIsShowing{
+            UIView.transition(with: self, duration: 1.0, options: [.transitionFlipFromTop], animations: {
+                self.bookCoverImageView.alpha = 0.0
+                self.numberOfWeeksBestSellerLabel.alpha = 1.0
+                self.bookBlurbTextView.alpha = 1.0
+            }, completion: nil)
+        } else {
+            UIView.transition(with: self, duration: 1.0, options: [.transitionFlipFromBottom], animations: {
+                self.bookCoverImageView.alpha = 1.0
+                self.numberOfWeeksBestSellerLabel.alpha = 0.0
+                self.bookBlurbTextView.alpha = 0.0
+            }, completion: nil)
+        }
+        pictureIsShowing.toggle()
     }
     
     public func configureBookCell(_ modelData: BookData){
         numberOfWeeksBestSellerLabel.text = "\(modelData.weeksOnList) week(s) on the best sellers list"
-        bookBlurbTextField.text = modelData.description
+        bookBlurbTextView.text = modelData.description
         bookCoverImageView.getImage(with: modelData.bookImage) { [weak self] result in
             switch result{
             case .failure(let appError):
