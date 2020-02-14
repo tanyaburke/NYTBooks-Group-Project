@@ -33,7 +33,7 @@ class FavoriteViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.text = "Some filler text"
         label.backgroundColor = .systemRed
-        label.alpha = 1.0
+        label.alpha = 0.0
         return label
     }()
     
