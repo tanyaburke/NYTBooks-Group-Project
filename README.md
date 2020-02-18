@@ -14,6 +14,9 @@ Inside of the first controller the top 10 bestselling books from any given categ
 
 The very next controller is the favorites controller which has a collection view that will only populate based on what was saved. 
 
+### Gifs:
+![gif](Assets/NYTimesBestSellers1.gif)
+
 ### Challenges:
 * Safari
 * Lauch screen Gif
