@@ -24,7 +24,7 @@ class BookCell: UICollectionViewCell {
       let label = UILabel()
         label.textAlignment = .left
         label.text = "Some filler text"
-        label.backgroundColor = .systemRed
+        label.backgroundColor = .systemGray4
         label.alpha = 0.0
         return label
     }()
@@ -68,7 +68,7 @@ class BookCell: UICollectionViewCell {
     
         bookCoverImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([bookCoverImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), bookCoverImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor), bookCoverImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9), bookCoverImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5)])
+        NSLayoutConstraint.activate([bookCoverImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor), bookCoverImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1.0), bookCoverImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0)])
     }
     
     private func setUpNumberOfWeeksBestSellerLabelConstraints() {
