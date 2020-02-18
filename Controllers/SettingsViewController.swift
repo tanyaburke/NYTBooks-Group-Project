@@ -40,7 +40,7 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemTeal
+        view.backgroundColor = .systemPurple
         navigationItem.title = "Pick Default Category"
         
         settingsView.settingsPickerView.dataSource = self
@@ -89,7 +89,9 @@ extension SettingsViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         instanceOfUserPreferencesFromSettingsController.saveTheCategory(categories[row])
-        
-        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        return NSAttributedString(string: categories[row].displayName, attributes: [NSAttributedString.Key.foregroundColor:UIColor.systemPurple])
     }
 }
