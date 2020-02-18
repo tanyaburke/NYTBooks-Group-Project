@@ -13,7 +13,7 @@ class SettingsView: UIView {
     public lazy var settingsPickerView: UIPickerView = {
         let picker = UIPickerView()
         let pv = UIPickerView(frame: CGRect.zero)
-        pv.backgroundColor = .systemPink
+        pv.backgroundColor = .systemGroupedBackground
         return pv
     }()
     
