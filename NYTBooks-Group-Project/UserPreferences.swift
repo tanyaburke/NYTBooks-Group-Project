@@ -12,6 +12,7 @@ import Foundation
 struct Key {
     static let displayNameKey = "DisplayName"
     static let encodedName = "dataKey"
+    static let selectedRow = "selectedRow"
     
 }
 protocol UserPreferenceDelegate: AnyObject{
@@ -25,12 +26,14 @@ class UserPreferences {
     
     weak var delegate: UserPreferenceDelegate?
     // need to save
-    func saveTheCategory(_ placement: ListItem){
+    func saveTheCategory(_ placement: ListItem, itemAt: Int){
         
         // this line saves it
         UserDefaults.standard.set(placement.displayName, forKey: Key.displayNameKey)
     
         UserDefaults.standard.set(placement.listNameEncoded, forKey: Key.encodedName)
+        
+        UserDefaults.standard.set(itemAt, forKey: Key.selectedRow)
         
         // im in here something is changing and it is happening when this happens so please listen and pay attention
         delegate?.reloadThedata(self)
@@ -45,5 +48,14 @@ class UserPreferences {
             return ListItem(displayName: "", listNameEncoded: "")
         }
         return ListItem(displayName: thecategory, listNameEncoded: theEncodedName)
+    }
+    
+    func getTheRow() -> Int {
+        guard let theSelectedRow = UserDefaults.standard.object(forKey: Key.selectedRow) as? Int else {
+            print("it did not work")
+            return 0 
+        }
+        
+        return theSelectedRow
     }
 }

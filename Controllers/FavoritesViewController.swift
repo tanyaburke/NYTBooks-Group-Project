@@ -40,12 +40,15 @@ class FavoritesViewController: UIViewController {
     // need model inorder to add what is suppose to be in the array.
     public var savedFavs = [BookData]() {
         didSet{
-            favoriteViewInstance.favsCollectionView.reloadData() // reload the data inside of the collection view
+            favoriteViewInstance.favsCollectionView.reloadData()
+            // reload the data inside of the collection view
             
             if savedFavs.isEmpty {
                 // need to make an extension for when the colletion view is empty
-               // favoriteViewInstance.favsCollectionView.backgroundView = EmptyCollection()
-                
+                favoriteViewInstance.favsCollectionView.backgroundView = EmptyStateView(title: "Theres nothing here", message: "You currently dont have anything as a saved things please go an like something.")
+            } else {
+              //  instanceOfSavedArticleV.collectionV.backgroundView = nil
+                favoriteViewInstance.favsCollectionView.backgroundView = nil 
             }
         }
     }
@@ -57,13 +60,14 @@ class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .blue
         favoriteViewInstance.favsCollectionView.delegate = self
         favoriteViewInstance.favsCollectionView.dataSource = self
         
         // need to set the nib for the cell here.
         favoriteViewInstance.favsCollectionView.register(FavoriteViewCell.self, forCellWithReuseIdentifier: "favCell")
         fetchSavedBooks()
+        
+        navigationItem.title = "Favorite Books"
         
     }
     
@@ -91,21 +95,21 @@ extension FavoritesViewController: UICollectionViewDataSource {
         let selectedFav = savedFavs[indexPath.row]
 
         cell.configureFavouriteViewCell(selectedFav)
+    
         
-        cell.delegate = self // why do we need th
-        cell.backgroundColor = .white
+        cell.delegate = self
         return cell
     }
     
     // will we be doing a configure cell
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+    }
+    
 }
 
 extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
-    // when I do something then someone else will listen...
-    // delegates listen for what we want ...
-    
-  
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
@@ -120,7 +124,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
              let selectedFav = savedFavs[indexPath.row]
             
-        let instanceOfDetailController = BookDetailViewController(dataPersistence: favsDataPersistenceInstance, book: selectedFav)
+        let instanceOfDetailController = BookDetailViewController(favsDataPersistenceInstance, book: selectedFav)
        
             
            instanceOfDetailController.chosenBook = selectedFav
