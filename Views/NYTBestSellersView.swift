@@ -14,12 +14,10 @@ class NYTBestSellersView: UIView {
     public lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        // initially created cell size
         let maxSize: CGSize = UIScreen.main.bounds.size
         let itemHeight: CGFloat = maxSize.height * 0.4
         let itemWidth: CGFloat = maxSize.height * 0.3
         layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
-        //layout.itemSize = CGSize(width: 200, height: 300)
         let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         cv.backgroundColor = .systemYellow
         return cv
