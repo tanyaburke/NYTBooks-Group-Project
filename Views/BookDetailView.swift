@@ -17,7 +17,7 @@ class BookDetailView: UIView {
     //The Detail ViewController should show the Book's image (Large image), a TextView for the description and a label for the book title and a Favorite button.
     //
     //Favorites Button When a user favorites a book there should be a show alert or animation (It's up to you) anything that shows the user the book they favrited was added.
-   
+
     
     
     
@@ -66,9 +66,9 @@ class BookDetailView: UIView {
          }
          
          private func commonInit(){
-           
-           setupSegmentedControlConstraints()
             setUpImageViewConstraints()
+           setupSegmentedControlConstraints()
+           
             setupTextFeildConstraints()
          }
      
@@ -77,8 +77,8 @@ class BookDetailView: UIView {
                 addSubview(imageView)
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
-                    imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40),
-                    imageView.heightAnchor.constraint(equalToConstant: 300),
+                    imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+                    imageView.heightAnchor.constraint(equalToConstant: 350),
                     imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
                     imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40)
                 ])
@@ -92,7 +92,7 @@ class BookDetailView: UIView {
          segmentedControl.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                  segmentedControl.centerXAnchor.constraint(equalTo: centerXAnchor),
-                 segmentedControl.centerYAnchor.constraint(equalTo: centerYAnchor),
+                 segmentedControl.centerYAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 40),
                  segmentedControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
                  segmentedControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 //                 segmentedControl.bottomAnchor.constraint(equalTo: centerYAnchor)
@@ -106,7 +106,7 @@ class BookDetailView: UIView {
         textView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
         textView.centerXAnchor.constraint(equalTo: centerXAnchor),
-        textView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
+        textView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),
         textView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
         textView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             textView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -10)
