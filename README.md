@@ -19,5 +19,6 @@ Display:
 // images + gifs 
 
 
-## Thank you for reading
-  ### - sincerely Shacamyuta 
+Thank you for reading
+
+  ### - Sincerely Shacamyuta 
