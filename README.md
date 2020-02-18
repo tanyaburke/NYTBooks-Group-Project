@@ -15,8 +15,8 @@ Inside of the first controller the top 10 bestselling books from any given categ
 The very next controller is the favorites controller which has a collection view that will only populate based on what was saved. 
 
 ### Demo Gifs:
-|NYTimesBestSellers1|NYTimesBestSellers2|NYTimesBestSellers3|
-|:.......:|:.......:|:.......:|
+| NYTimesBestSellers1 | NYTimesBestSellers2 | NYTimesBestSellers3 |
+|---------------------|---------------------|---------------------|
 |![gif](Assets/NYTimesBestSellers1.gif)|![gif](Assets/NYTimesBestSellers2.gif)|![gif](Assets/NYTimesBestSellers3.gif)|
 
 ### Challenges:
