@@ -1,2 +1,11 @@
-# NYTBooks-Group-Project
+# NYTBooks Project - Team name: ShaCamYuTa 
 Group Project
+
+### Collaborators: Shaniya, Cameron, Yullia, Tanya 
+
+This projectt will query the NYTimes API in order to get data, and populate it in their perspective controllers.
+
+Inside of the first controller the top 10 bestselling books from any given category are displayed inside of a collection view. There is also a picker view that allows for you to select from the available categories inside of that same tab.
+
+The very next controller is the favorites controller which has the a collection view a that will only populate based on what was saved. 
+
