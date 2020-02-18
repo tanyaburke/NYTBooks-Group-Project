@@ -22,6 +22,8 @@ Challenges:
 // images + gifs 
 
 
+![groupName](https://user-images.githubusercontent.com/55717900/74779528-af0c0400-526b-11ea-826c-f3df416b9e72.gif
+
 Thank you for reading
 
 
