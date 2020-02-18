@@ -24,9 +24,7 @@ The very next controller is the favorites controller which has a collection view
 * Lauch screen Gif
 
 
-### Display: 
-// images + gifs 
-
+### Team Image: 
 
 ![groupName](https://user-images.githubusercontent.com/55717900/74779867-5852fa00-526c-11ea-97c5-00ebc1d171d6.gif)
 
