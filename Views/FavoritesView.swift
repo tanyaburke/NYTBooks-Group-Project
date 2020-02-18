@@ -5,22 +5,20 @@
 //  Created by Tanya Burke on 2/5/20.
 //  Copyright © 2020 Tanya Burke. All rights reserved.
 //
-
 import UIKit
 
 class FavoritesView: UIView {
     
     // remember to push ONLY through terminal and also
-
+ 
     public lazy var favsCollectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        
-        let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        collection.backgroundColor = .purple
-        return collection
+           layout.scrollDirection = .horizontal
+           
+           let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+           collection.backgroundColor = .systemPurple
+           return collection
     }()
-    
     
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)

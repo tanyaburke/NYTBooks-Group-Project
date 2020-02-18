@@ -11,8 +11,8 @@ import UIKit
 class SettingsViewController: UIViewController {
     
     private let settingsView = SettingsView()
-    
-    var instanceOfUserPreferencesFromSettingsController: UserPreferences
+ 
+    public var instanceOfUserPreferencesFromSettingsController: UserPreferences
     
     init( userPerferences: UserPreferences){
         self.instanceOfUserPreferencesFromSettingsController = userPerferences
@@ -23,16 +23,21 @@ class SettingsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // testing data for the view
     private var categories: [ListItem] = [] {
         didSet{
             DispatchQueue.main.async {
                 self.settingsView.settingsPickerView.reloadAllComponents()
+
             }
+            
+            let selected = instanceOfUserPreferencesFromSettingsController.getTheRow()
+
+            //let parts = self.categories.firstIndex(of: selected)
+            
+            settingsView.settingsPickerView.selectRow(selected, inComponent: 0, animated: true)
         }
     }
         
-        //= ["Business", "Technology", "Travel", "Authobiography", "Novels"]
     
     override func loadView() {
         view = settingsView
@@ -45,7 +50,18 @@ class SettingsViewController: UIViewController {
         
         settingsView.settingsPickerView.dataSource = self
         settingsView.settingsPickerView.delegate = self
+
         loadTheCategories()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+//        let selected = instanceOfUserPreferencesFromSettingsController.getTheRow()
+//
+//        //let parts = self.categories.firstIndex(of: selected)
+//
+//        settingsView.settingsPickerView.selectRow(selected, inComponent: 0, animated: true)
     }
     
     private func loadTheCategories() {
@@ -62,6 +78,8 @@ class SettingsViewController: UIViewController {
         
         
     }
+    
+
 }
 
 extension SettingsViewController: UIPickerViewDataSource {
@@ -70,28 +88,32 @@ extension SettingsViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        
-        // FIXME: I will need to add books.count
-        //return 52
-        //FIXME:
         return categories.count
     }
 }
 
 extension SettingsViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        // FIXME:
-        
-        return categories[row].displayName
+    
+        let selectRow = categories[row].displayName
+     //  var theSelect = instanceOfUserPreferencesFromSettingsController.getSavedCategory()
+
+        return selectRow
     }
     
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        instanceOfUserPreferencesFromSettingsController.saveTheCategory(categories[row])
+
+        instanceOfUserPreferencesFromSettingsController.saveTheCategory(categories[row], itemAt: row)
+        
+
+
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         return NSAttributedString(string: categories[row].displayName, attributes: [NSAttributedString.Key.foregroundColor:UIColor.systemPurple])
+
     }
+    
 }
