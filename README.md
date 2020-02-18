@@ -22,7 +22,7 @@ Challenges:
 // images + gifs 
 
 
-(https://user-images.githubusercontent.com/55717900/74779528-af0c0400-526b-11ea-826c-f3df416b9e72.gif)
+![groupName](https://user-images.githubusercontent.com/55717900/74779867-5852fa00-526c-11ea-97c5-00ebc1d171d6.gif)
 
 
 Thank you for reading
