@@ -1,7 +1,7 @@
 # NYTBooks Project - Team name: ShaCamYuTa 
 Group Project
 
-### Collaborators: Shaniya, Cameron, Yullia, Tanya 
+### Collaborators: Shaniya, Cameron, Yuliia, Tanya 
 
 ### Description:
   This project will query the NYTimes API in order to get data, and populate it in their perspective controllers.
