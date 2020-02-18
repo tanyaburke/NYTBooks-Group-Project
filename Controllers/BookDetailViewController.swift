@@ -51,17 +51,26 @@ class BookDetailViewController: UIViewController {
     }
     
     @objc func favButtonPressed(_ sender: UIBarButtonItem){
-
+        if !dataPersistence.hasItemBeenSaved(chosenBook){
             do {
-
                 try dataPersistence.createItem(chosenBook)
                 DispatchQueue.main.async {
                     self.showAlert(title: "Saved", message: "Book has been added to favorites")
                 }
-
             } catch {
-                print("error saving article: \(chosenBook)")
+                print("error saving book: \(chosenBook.title)")
             }
+        } else {
+            do {
+                let index = try dataPersistence.loadItems().firstIndex(of: chosenBook) ?? -1
+                try dataPersistence.deleteItem(at: index)
+                DispatchQueue.main.async{
+                    self.showAlert(title: "Book Removed", message: "Selected book has been removed from favourites.")
+                }
+            } catch {
+                print("error saving book: \(chosenBook.title)")
+            }
+        }
     }
     
     
