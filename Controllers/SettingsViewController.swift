@@ -27,14 +27,10 @@ class SettingsViewController: UIViewController {
         didSet{
             DispatchQueue.main.async {
                 self.settingsView.settingsPickerView.reloadAllComponents()
+                let selected = self.instanceOfUserPreferencesFromSettingsController.getTheRow()
+                self.settingsView.settingsPickerView.selectRow(selected, inComponent: 0, animated: true)
 
             }
-            
-            let selected = instanceOfUserPreferencesFromSettingsController.getTheRow()
-
-            //let parts = self.categories.firstIndex(of: selected)
-            
-            settingsView.settingsPickerView.selectRow(selected, inComponent: 0, animated: true)
         }
     }
         

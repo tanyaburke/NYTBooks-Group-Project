@@ -16,7 +16,7 @@ class NYTTabController: UITabBarController {
     private var tabBarInstanceOfUserPreference = UserPreferences()
     
      private lazy var nytBestsellersVC: NYTBestsellersController = {
-        let vc = NYTBestsellersController(dataPersistence: tabBarInstanceOfDataPersistence, userPerferences: tabBarInstanceOfUserPreference)
+        let vc = NYTBestsellersController(dataPersistence: tabBarInstanceOfDataPersistence, userPreferences: tabBarInstanceOfUserPreference)
         
         vc.instanceOfUserPreferences = tabBarInstanceOfUserPreference
             //need to add the instance of dataPeristence inside of the bestSeller controller...

@@ -13,7 +13,7 @@ class InitialView: UIView {
     public lazy var logoGifImageView: UIImageView = {
      let gifImage =  UIImageView()
         gifImage.loadGif(name: "bookStack")
-        gifImage.backgroundColor = .yellow
+        gifImage.backgroundColor = .systemTeal
         gifImage.contentMode = .scaleToFill
         gifImage.animationDuration = 2.0
             return gifImage
