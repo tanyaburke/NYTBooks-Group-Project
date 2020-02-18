@@ -16,30 +16,24 @@ struct Key {
     
 }
 protocol UserPreferenceDelegate: AnyObject{
-    // where you observe the change you should call it..
     func reloadThedata(_ instanceOfUserPreferences: UserPreferences)
-   
 }
 
 class UserPreferences {
-    // this needs to be a class because with a struct it will make a completely different class of the same thing.. and even though it may be the exact same thing it is not the thing that we are referencing so when we call it.. we are technically not caling the same thing
     
     weak var delegate: UserPreferenceDelegate?
-    // need to save
+
     func saveTheCategory(_ placement: ListItem, itemAt: Int){
         
-        // this line saves it
         UserDefaults.standard.set(placement.displayName, forKey: Key.displayNameKey)
     
         UserDefaults.standard.set(placement.listNameEncoded, forKey: Key.encodedName)
         
         UserDefaults.standard.set(itemAt, forKey: Key.selectedRow)
         
-        // im in here something is changing and it is happening when this happens so please listen and pay attention
         delegate?.reloadThedata(self)
     }
     
-    // get to get the saved things
     func getSavedCategory() -> ListItem {
         
         guard let thecategory = UserDefaults.standard.object(forKey: Key.displayNameKey) as? String, let theEncodedName = UserDefaults.standard.object(forKey: Key.encodedName) as? String else {

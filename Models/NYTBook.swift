@@ -8,8 +8,6 @@
 
 import Foundation
 
-// Structures involved in getting the category names for the picker view.
-
 struct ListWrapper: Codable{
     let results: [ListItem]
 }
@@ -23,8 +21,6 @@ struct ListItem: Codable, Equatable{
         case listNameEncoded = "list_name_encoded"
     }
 }
-
-// Structures involved in getting the data for a book.
 
 struct TopLevelBookResult: Codable{
     let results: BookWrapper

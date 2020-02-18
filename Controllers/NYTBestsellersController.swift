@@ -14,10 +14,8 @@ class NYTBestsellersController: UIViewController {
     
     private let nytBestSellerView = NYTBestSellersView()
     
-    // FIXME: uncomment when will use data persistance from TabBarController
     var dataPersistence: DataPersistence<BookData>
     
-    //FIXME: if we will use userPreference for user defaults
     var instanceOfUserPreferences: UserPreferences
     
     init(dataPersistence: DataPersistence<BookData>, userPreferences: UserPreferences){
@@ -35,17 +33,27 @@ class NYTBestsellersController: UIViewController {
         didSet {
             DispatchQueue.main.async {
                 self.nytBestSellerView.pickerView.reloadAllComponents()
+                let selected = self.instanceOfUserPreferences.getTheRow()
+                self.nytBestSellerView.pickerView.selectRow(selected, inComponent: 0, animated: true)
             }
         }
     }
-    
-    // getting data for our collection view from API:
+
     private var bookData = [BookData] () {
-        didSet {
-            DispatchQueue.main.async {
-                self.nytBestSellerView.collectionView.reloadData()
-            }
-        }
+        didSet{
+               DispatchQueue.main.async{
+                   self.nytBestSellerView.collectionView.reloadData()
+               }
+               if !bookData.isEmpty{
+                   DispatchQueue.main.async{
+                       self.nytBestSellerView.collectionView.backgroundView = nil
+                   }
+               } else {
+                   DispatchQueue.main.async{
+                       self.nytBestSellerView.collectionView.backgroundView = EmptyStateView(title: "No Default Category Selected", message: "Navigate to the settings menu to select a default category, or use the picker view below to display best sellers from a category.")
+                   }
+               }
+           }
     }
     
     override func loadView() {
@@ -66,10 +74,8 @@ class NYTBestsellersController: UIViewController {
         
         nytBestSellerView.collectionView.register(BookCell.self, forCellWithReuseIdentifier: "bookCell")
         
-        //FIXME: if we useing user Preference for user defaults
-        //let userCategoryName = userPreference.getCategoryName() ?? "Hardcover Nonfiction"
-        
         getCategories()
+        fetchBooks(userCategory: instanceOfUserPreferences.getSavedCategory().listNameEncoded)
         
        nytBestSellerView.hideButton.addTarget(self, action: #selector(hidePickerView(_:)), for: .touchUpInside)
     }
@@ -87,13 +93,15 @@ class NYTBestsellersController: UIViewController {
     
     
     private func fetchBooks(userCategory: String) {
-        NYTAPIClient.getBookData(userCategory) {[weak self] (result) in
-            switch result {
-            case .failure(let appError):
-                print("fetching books error: \(appError)")
-            case .success(let books):
-                DispatchQueue.main.async {
-                    self?.bookData = books
+        if userCategory == "" {
+            self.nytBestSellerView.collectionView.backgroundView = EmptyStateView(title: "No Default Category Selected", message: "Navigate to the settings menu to select a default category, or use the picker view below to display best sellers from a category.")
+        } else {
+            NYTAPIClient.getBookData(userCategory) { [weak self] result in
+                switch result{
+                case .failure(let appError):
+                    print("Error getting bookData: \(appError)")
+                case .success(let data):
+                    self?.bookData = data
                 }
             }
         }
@@ -118,7 +126,7 @@ class NYTBestsellersController: UIViewController {
                 nytBestSellerView.hideButton.setTitle("Hide", for: .normal)
                 UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveLinear], animations: {
                     self.nytBestSellerView.collectionViewHeightLayoutConstraint.isActive = false
-                    self.nytBestSellerView.collectionViewHeightLayoutConstraint = self.nytBestSellerView.collectionView.heightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.5)
+                    self.nytBestSellerView.collectionViewHeightLayoutConstraint = self.nytBestSellerView.collectionView.heightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.65)
                     self.nytBestSellerView.collectionViewHeightLayoutConstraint.isActive = true
                     self.nytBestSellerView.pickerView.alpha = 1.0
                 }, completion: { done in
@@ -131,24 +139,27 @@ class NYTBestsellersController: UIViewController {
         }
 }
 
-//FIXME: when we add user defaults:
 extension NYTBestsellersController: UserPreferenceDelegate {
     func reloadThedata(_ instanceOfUserPreferences: UserPreferences) {
         fetchBooks(userCategory: instanceOfUserPreferences.getSavedCategory().listNameEncoded)
+        DispatchQueue.main.async {
+            self.nytBestSellerView.pickerView.reloadAllComponents()
+            let selected = self.instanceOfUserPreferences.getTheRow()
+            self.nytBestSellerView.pickerView.selectRow(selected, inComponent: 0, animated: true)
+        }
     }
 }
 
 
 extension NYTBestsellersController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //FIXME:
         return bookData.count
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bookCell", for: indexPath) as? BookCell else {
             fatalError("coudl not downcast to BookCell")
         }
-        //FIXME:
         let book = bookData[indexPath.row]
         cell.configureBookCell(book)
         cell.backgroundColor = .systemGray4
@@ -166,10 +177,6 @@ extension NYTBestsellersController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let book = bookData[indexPath.row]
         let bookDetailVC = BookDetailViewController(dataPersistence, book: book)
-        //FIXME: What name of bookData in the BookDetailViewController?
-        //bookDetailVC.book = book
-        //FIXME: uncomment when connect to TabBArController and instance of DataPersistence
-        //bookDetailVC.dataPersistence = dataPersitence
         navigationController?.pushViewController(bookDetailVC, animated: true)
     }
 }
@@ -188,12 +195,12 @@ extension NYTBestsellersController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return categoriesOfBooks[row].displayName
     }
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let userCategory = categoriesOfBooks[row].listNameEncoded
         fetchBooks(userCategory: userCategory)
-        //userPreference.setSectionName(categoryName)
-        
     }
+    
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         return NSAttributedString(string: categoriesOfBooks[row].displayName, attributes: [NSAttributedString.Key.foregroundColor:UIColor.systemGray4])
     }

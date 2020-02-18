@@ -20,7 +20,6 @@ class BookDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemPurple
-        // Do any additional setup after loading the view.
         navigationItem.title = chosenBook.title
         updateUI()
         
@@ -80,7 +79,6 @@ class BookDetailViewController: UIViewController {
                 }
             }
         }
-        
         detailView.textView.text = chosenBook.description
     }
     

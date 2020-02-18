@@ -21,7 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                              options: .transitionCrossDissolve,
                              animations: nil,
                              completion: nil)
-//                 window?.makeKeyAndVisible()
        }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {

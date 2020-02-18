@@ -55,7 +55,6 @@ class EmptyStateView: UIView {
             titleLabel.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([titleLabel.bottomAnchor.constraint(equalTo: messageLabel.topAnchor, constant: -8), titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8), titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)])
         }
-    
     }
 
 

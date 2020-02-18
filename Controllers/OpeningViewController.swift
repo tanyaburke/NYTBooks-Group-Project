@@ -38,7 +38,6 @@ class OpeningViewController: UIViewController {
     
     override func loadView() {
         view = logoAnimationView
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
