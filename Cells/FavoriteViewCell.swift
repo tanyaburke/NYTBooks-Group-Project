@@ -32,7 +32,7 @@ class FavoriteViewCell: UICollectionViewCell {
       let label = UILabel()
         label.textAlignment = .left
         label.text = "Some filler text"
-        label.backgroundColor = .systemRed
+        label.backgroundColor = .systemGray4
         label.alpha = 0.0
         return label
     }()
@@ -43,14 +43,16 @@ class FavoriteViewCell: UICollectionViewCell {
         textView.backgroundColor = .systemGray4
         textView.isEditable = false
         textView.alpha = 0.0
+        textView.font = UIFont(name: "TimesNewRomanPSMT", size: 25.0)
         return textView
     }()
     
     lazy var moreOptionsButton: UIButton = {
        let button = UIButton()
         button.setTitle("", for: .normal)
-        button.setBackgroundImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.setBackgroundImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.addTarget(self, action: #selector(moreOptionsButtonPressed), for: .touchUpInside)
+        button.tintColor = .systemTeal
         button.alpha = 1.0
         return button
     }()
@@ -79,6 +81,12 @@ class FavoriteViewCell: UICollectionViewCell {
         addGestureRecognizer(longPress)
         bookBlurbTextView.isUserInteractionEnabled = false
         bookBlurbTextView.isEditable = false
+        bookBlurbTextView.layer.cornerRadius = 10.0
+        bookBlurbTextView.layer.borderWidth = 1.0
+        bookBlurbTextView.layer.borderColor = UIColor.systemTeal.cgColor
+        numberOfWeeksBestSellerLabel.layer.cornerRadius = 10.0
+        numberOfWeeksBestSellerLabel.layer.borderWidth = 1.0
+        numberOfWeeksBestSellerLabel.layer.borderColor = UIColor.systemTeal.cgColor
     }
     
     private func setUpBookCoverImageViewConstraints(){
@@ -86,14 +94,14 @@ class FavoriteViewCell: UICollectionViewCell {
     
         bookCoverImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([bookCoverImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), bookCoverImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor), bookCoverImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9), bookCoverImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5)])
+        NSLayoutConstraint.activate([bookCoverImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor), bookCoverImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1.0), bookCoverImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0 )])
     }
     
     private func setUpMoreOptionsButtonConstraints() {
         addSubview(moreOptionsButton)
         moreOptionsButton.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([moreOptionsButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8), moreOptionsButton.widthAnchor.constraint(equalToConstant: 50), moreOptionsButton.heightAnchor.constraint(equalToConstant: 50)])
+        NSLayoutConstraint.activate([moreOptionsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8), moreOptionsButton.widthAnchor.constraint(equalToConstant: 50), moreOptionsButton.heightAnchor.constraint(equalToConstant: 50)])
     }
     
     private func setUpNumberOfWeeksBestSellerLabelConstraints() {
