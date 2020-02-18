@@ -19,7 +19,7 @@ class BookDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .purple
+        view.backgroundColor = .systemPurple
         // Do any additional setup after loading the view.
         navigationItem.title = chosenBook.title
         updateUI()

@@ -19,6 +19,13 @@ class InitialView: UIView {
             return gifImage
         }()
     
+    public lazy var groupName: UIImageView = {
+        let groupName = UIImageView()
+        groupName.loadGif(name:"groupName")
+        groupName.contentMode = .scaleToFill
+        return groupName
+    }()
+    
         override init(frame: CGRect) {
             super.init(frame: UIScreen.main.bounds)
             commonInit()
@@ -30,11 +37,14 @@ class InitialView: UIView {
             
         }
 
-    
+    private func commonInit(){
+        loadingGif()
+        groupNameConstraints()
+    }
     
 
         
-        private func commonInit() {
+        private func loadingGif() {
 //            backgroundColor = UIColor(white: 246.0 / 255.0, alpha: 1)
             addSubview(logoGifImageView)
             logoGifImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,14 +53,16 @@ class InitialView: UIView {
             logoGifImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -100).isActive = true
             logoGifImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 100).isActive = true
         }
+    
+    private func groupNameConstraints(){
+addSubview(groupName)
+        groupName.translatesAutoresizingMaskIntoConstraints = false
+        groupName.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.15).isActive = true
+        groupName.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+        groupName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        groupName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+    
     }
 
-//
-//private func animate() {
-//let duration: Double = 1.0
-//    UIView.transition(with: , duration: <#T##TimeInterval#>, options: <#T##UIView.AnimationOptions#>, animations: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>, completion: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
-//    UIView.transition(with: self, duration: duration, options: [], animations: {
-//    gifImage.alpha = 1.0
-//  }, completion: nil)
+}
 
-//}
