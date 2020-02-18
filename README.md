@@ -13,7 +13,7 @@ The very next controller is the favorites controller which has a collection view
 ### Technologies:
 Swift 5, Xcode 11, Git, UIKit, ImageIO, RESTful API, Memory Management (ARC), CocoaPods, UserDefaults, SafariServices, iOS Constraint Engine
 
-Challenges:
+### Challenges:
 * Safari
 * Lauch screen Gif
 
