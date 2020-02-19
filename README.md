@@ -8,11 +8,9 @@ Group Project
 Swift 5, Xcode 11, Git, UIKit, ImageIO, RESTful API, Memory Management (ARC), CocoaPods, UserDefaults, SafariServices, iOS Constraint Engine
 
 ### Description:
-  This project will query the NYTimes API in order to get data, and populate it in their perspective controllers.
+  This project displays the top ten books on the New York Times Best Sellers list. The user can choose which best selling books to display from a list of 59 categories. Once chosen, the user can browse the books and favourite any of them that appeal to them. If desired, they can even navigate to one of four online retailers to purchase the book.
 
-Inside of the first controller the top 10 bestselling books from any given category are displayed inside of a collection view. There is also a picker view that allows for you to select from the available categories inside of that same tab.
-
-The very next controller is the favorites controller which has a collection view that will only populate based on what was saved. 
+  It was our first time working in a team environment, which presented its own set of difficulties and challenges, especially surrounding the use of git. However, we all navigated it very well, and learned a great deal from the experience.
 
 ### Demo Gifs:
 | NYTimesBestSellers1 | NYTimesBestSellers2 | NYTimesBestSellers3 |
