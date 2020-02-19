@@ -19,8 +19,11 @@ Swift 5, Xcode 11, Git, UIKit, ImageIO, RESTful API, Memory Management (ARC), Co
 
 ### Challenges:
 * Safari
-* Lauch screen Gif
-  We wanted to add an animated slpash screen to our app. This was a little challenging, locating information on how to make it possible. Essentially google, and the experienced coding team in our class helped make it possible. We used the built in launch screen to display the initial image of our gif, added an additional view that utilized the extension we added to UIView to play the gif. It would paly the gif for a short period of time, and then segue automatically to the rest of the app. 
+*
+  We wanted to add an animated splash screen to our app. This was a little challenging, locating information on how to make it possible. Essentially google, and the experienced coding team in our class helped make it possible. We used the built in launch screen to display the initial image of our gif, added an additional view that utilized the extension we added to UIView to play the gif. It would play the gif for a short period of time, and then segue automatically to the rest of the app. 
+  
+The code that we used to make the extension on the UIView came from:
+https://github.com/YogeshPateliOS/Swift-4-Xcode-9---How-To-Display-GIF-in-UIImage-with-One-Line-Of-Code-in-iOS-Latest-2017-Hindi.
 
 The code that was a bit challenging was the timer, and its placement
 
